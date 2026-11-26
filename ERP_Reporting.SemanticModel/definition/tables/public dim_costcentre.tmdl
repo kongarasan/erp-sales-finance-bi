@@ -1,0 +1,64 @@
+table 'public dim_costcentre'
+	lineageTag: 9bd2890c-a85c-4049-bc95-22c4181c1870
+
+	column costcentre_key
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 885c70bc-3f0c-4aff-9f8e-7d96a2ebcd98
+		summarizeBy: none
+		sourceColumn: costcentre_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column costcentre_code
+		dataType: string
+		lineageTag: 7245ac61-fa7b-4be5-8be5-5fe7618a5b58
+		summarizeBy: none
+		sourceColumn: costcentre_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column costcentre_name
+		dataType: string
+		lineageTag: 2a205e9e-c331-42f7-857f-2b163d96e32a
+		summarizeBy: none
+		sourceColumn: costcentre_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column department
+		dataType: string
+		lineageTag: 6429f431-f8c4-4a34-ad16-cb8f56a0a74c
+		summarizeBy: none
+		sourceColumn: department
+
+		annotation SummarizationSetBy = Automatic
+
+	column sales_region
+		dataType: string
+		lineageTag: b5f7462d-3bbf-4907-952e-38468a6a767b
+		summarizeBy: none
+		sourceColumn: sales_region
+
+		annotation SummarizationSetBy = Automatic
+
+	column manager_name
+		dataType: string
+		lineageTag: d46ef088-1dd0-4fb8-803b-7e2765a2ba16
+		summarizeBy: none
+		sourceColumn: manager_name
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'public dim_costcentre' = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("127.0.0.1:5433", "erp_reporting"),
+				    public_dim_costcentre = Source{[Schema="public",Item="dim_costcentre"]}[Data]
+				in
+				    public_dim_costcentre
+
+	annotation PBI_ResultType = Table
+

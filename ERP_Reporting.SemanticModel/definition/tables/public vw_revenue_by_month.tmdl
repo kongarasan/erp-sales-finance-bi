@@ -1,0 +1,124 @@
+table 'public vw_revenue_by_month'
+	lineageTag: ef72b5a1-eae0-41ed-aeb1-b4131a93e98e
+
+	column year
+		dataType: int64
+		formatString: 0
+		lineageTag: b727957b-0860-45e2-9f38-bf6e6ca35bc5
+		summarizeBy: sum
+		sourceColumn: year
+
+		annotation SummarizationSetBy = Automatic
+
+	column month
+		dataType: int64
+		formatString: 0
+		lineageTag: d36bc1eb-8c94-459e-a43e-e43af675e3e9
+		summarizeBy: sum
+		sourceColumn: month
+
+		annotation SummarizationSetBy = Automatic
+
+	column year_month
+		dataType: string
+		lineageTag: 592c86f7-f5b8-43d7-95b5-25a6726d76c2
+		summarizeBy: none
+		sourceColumn: year_month
+
+		annotation SummarizationSetBy = Automatic
+
+	column month_start
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 03f9219c-dcb5-430b-b1cd-6a165d96fd9f
+		summarizeBy: none
+		sourceColumn: month_start
+
+		variation Variation
+			isDefault
+			relationship: d7881705-bcea-438d-a2cd-25670d576214
+			defaultHierarchy: LocalDateTable_876ee7db-ab8b-4e92-bb88-d399f4046e91.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column invoice_count
+		dataType: int64
+		formatString: 0
+		lineageTag: dac50c90-d673-4a8c-a329-d114307e497b
+		summarizeBy: sum
+		sourceColumn: invoice_count
+
+		annotation SummarizationSetBy = Automatic
+
+	column active_customers
+		dataType: int64
+		formatString: 0
+		lineageTag: 97f4dd10-1bb7-46f0-abe8-52aa7e27da35
+		summarizeBy: sum
+		sourceColumn: active_customers
+
+		annotation SummarizationSetBy = Automatic
+
+	column net_revenue
+		dataType: double
+		lineageTag: 55c035f3-a39b-4428-b3bb-07dafcc803db
+		summarizeBy: sum
+		sourceColumn: net_revenue
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column gross_revenue
+		dataType: double
+		lineageTag: f8c1aae2-a935-4448-a324-d9ba2a0c2ae9
+		summarizeBy: sum
+		sourceColumn: gross_revenue
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column net_revenue_ytd
+		dataType: double
+		lineageTag: 3f6fb3aa-2a7e-4db8-9391-af830f11f10c
+		summarizeBy: sum
+		sourceColumn: net_revenue_ytd
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column net_revenue_prev_year
+		dataType: double
+		lineageTag: 7aefce91-ccd4-4970-b900-6d2ad921ce92
+		summarizeBy: sum
+		sourceColumn: net_revenue_prev_year
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column yoy_pct
+		dataType: double
+		lineageTag: 6d781d3d-f815-4764-9004-14d1672181e9
+		summarizeBy: sum
+		sourceColumn: yoy_pct
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition 'public vw_revenue_by_month' = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("127.0.0.1:5433", "erp_reporting"),
+				    public_vw_revenue_by_month = Source{[Schema="public",Item="vw_revenue_by_month"]}[Data]
+				in
+				    public_vw_revenue_by_month
+
+	annotation PBI_ResultType = Table
+

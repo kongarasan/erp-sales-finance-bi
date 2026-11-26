@@ -1,0 +1,31 @@
+// Welcome to DAX query view! Learn more about DAX queries at https://aka.ms/dax-queries.
+// Right-click on tables, columns, or measures in the data pane to access quick queries, or ask Copilot for help writing DAX.
+// Adds all measures to the 'public fact_invoice' table and shows a check table by year.
+DEFINE
+    MEASURE 'public fact_invoice'[Revenue] = SUM ( 'public fact_invoice'[net_amount] )
+    MEASURE 'public fact_invoice'[Revenue Gross] = SUM ( 'public fact_invoice'[gross_amount] )
+    MEASURE 'public fact_invoice'[Revenue PY] = CALCULATE ( [Revenue], SAMEPERIODLASTYEAR ( 'public dim_date'[full_date] ) )
+    MEASURE 'public fact_invoice'[Revenue YoY %] =
+        VAR _cur = [Revenue]
+        VAR _py = [Revenue PY]
+        RETURN IF ( NOT ISBLANK ( _py ), DIVIDE ( _cur - _py, _py ) )
+    MEASURE 'public fact_invoice'[Open Receivables] =
+        CALCULATE ( SUM ( 'public fact_invoice'[gross_amount] ), 'public fact_invoice'[payment_status] = "OPEN", REMOVEFILTERS ( 'public dim_date' ) )
+    MEASURE 'public fact_invoice'[DSO] =
+        VAR _lastDate = MAX ( 'public dim_date'[full_date] )
+        VAR _grossTTM = CALCULATE ( SUM ( 'public fact_invoice'[gross_amount] ), DATESINPERIOD ( 'public dim_date'[full_date], _lastDate, -365, DAY ) )
+        RETURN DIVIDE ( [Open Receivables], _grossTTM ) * 365
+    MEASURE 'public fact_invoice'[Overdue Amount] =
+        VAR _asOf = CALCULATE ( MAX ( 'public fact_invoice'[invoice_date] ), REMOVEFILTERS () )
+        RETURN CALCULATE ( SUM ( 'public fact_invoice'[gross_amount] ), 'public fact_invoice'[payment_status] = "OPEN", 'public fact_invoice'[due_date] < _asOf, REMOVEFILTERS ( 'public dim_date' ) )
+    MEASURE 'public fact_invoice'[Overdue %] = DIVIDE ( [Overdue Amount], [Open Receivables] )
+    MEASURE 'public fact_invoice'[Collection Rate] =
+        DIVIDE ( CALCULATE ( SUM ( 'public fact_invoice'[gross_amount] ), 'public fact_invoice'[payment_status] = "PAID" ), [Revenue Gross] )
+    MEASURE 'public fact_invoice'[Cash Collected] =
+        CALCULATE ( SUM ( 'public fact_invoice'[gross_amount] ), USERELATIONSHIP ( 'public fact_invoice'[payment_date_key], 'public dim_date'[date_key] ) )
+EVALUATE
+SUMMARIZECOLUMNS (
+    'public dim_date'[year],
+    "Revenue", [Revenue], "YoY %", [Revenue YoY %], "DSO", [DSO],
+    "Overdue %", [Overdue %], "Collection Rate", [Collection Rate]
+)

@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "ERP_Reporting"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "3d9675cd-2e03-4aa1-ba31-24f17fc95e49"
+  }
+}

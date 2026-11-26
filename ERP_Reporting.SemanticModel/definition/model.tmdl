@@ -1,0 +1,32 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-IN
+	valueFilterBehavior: independent
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["public vw_dso_by_customer","public vw_revenue_by_month","public vw_top20_customers","public dim_costcentre","public dim_customer","public dim_date","public fact_invoice","public vw_overdue_ageing"]
+
+annotation PBI_ProTooling = ["DaxQueryView_Desktop","DevMode"]
+
+ref table 'public vw_dso_by_customer'
+ref table 'public vw_revenue_by_month'
+ref table DateTableTemplate_00ef2ca4-2955-43da-96b8-58cc10926f8a
+ref table LocalDateTable_876ee7db-ab8b-4e92-bb88-d399f4046e91
+ref table 'public vw_top20_customers'
+ref table 'public dim_costcentre'
+ref table 'public dim_customer'
+ref table LocalDateTable_b2171869-6c4d-403b-b6da-4efb38d74900
+ref table 'public dim_date'
+ref table 'public fact_invoice'
+ref table LocalDateTable_e53ba277-c7a9-4a50-a296-115799a06aa0
+ref table LocalDateTable_9ecbb9c7-4de1-4a19-bb9a-2c703546a9cb
+ref table LocalDateTable_6cc47b5e-549d-4dd6-bfb4-0ce8996330ca
+ref table 'public vw_overdue_ageing'
+
+ref cultureInfo en-US
+

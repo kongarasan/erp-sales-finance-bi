@@ -1,0 +1,131 @@
+table 'public dim_customer'
+	lineageTag: 7e282749-33e5-43cb-9fe0-222d7037d456
+
+	column customer_key
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 9dc6d70d-2459-412c-8937-b6722f6e98e9
+		summarizeBy: none
+		sourceColumn: customer_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_number
+		dataType: string
+		lineageTag: fdbfdaa5-be6b-4f69-86c2-d9a0765742cb
+		summarizeBy: none
+		sourceColumn: customer_number
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_name
+		dataType: string
+		lineageTag: 00d635e1-0b9a-4ece-8dfe-6c387d5fc828
+		summarizeBy: none
+		sourceColumn: customer_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column segment
+		dataType: string
+		lineageTag: ac33f7c6-35f2-477e-b5c6-8549efd33fb8
+		summarizeBy: none
+		sourceColumn: segment
+
+		annotation SummarizationSetBy = Automatic
+
+	column industry
+		dataType: string
+		lineageTag: 0d840a76-883c-4774-b69d-1cd1a69dab9e
+		summarizeBy: none
+		sourceColumn: industry
+
+		annotation SummarizationSetBy = Automatic
+
+	column city
+		dataType: string
+		lineageTag: 88c79be8-e6d1-4c60-97b5-ac59f5d685c2
+		summarizeBy: none
+		sourceColumn: city
+
+		annotation SummarizationSetBy = Automatic
+
+	column postcode
+		dataType: string
+		lineageTag: c7973be5-6442-40a7-b04b-354db3090bee
+		summarizeBy: none
+		sourceColumn: postcode
+
+		annotation SummarizationSetBy = Automatic
+
+	column federal_state
+		dataType: string
+		lineageTag: 2c86e4e9-b085-4a2d-8be6-b60d01d35ce6
+		summarizeBy: none
+		sourceColumn: federal_state
+
+		annotation SummarizationSetBy = Automatic
+
+	column sales_region
+		dataType: string
+		lineageTag: 8de3c90d-fef6-4778-a26e-0682a9892f7b
+		summarizeBy: none
+		sourceColumn: sales_region
+
+		annotation SummarizationSetBy = Automatic
+
+	column country
+		dataType: string
+		lineageTag: 5d8f1750-bdf7-44ae-ae53-36c0de65148d
+		summarizeBy: none
+		sourceColumn: country
+
+		annotation SummarizationSetBy = Automatic
+
+	column payment_terms_days
+		dataType: int64
+		formatString: 0
+		lineageTag: 57aab0f3-99ad-45ca-a665-a66a294bcdc6
+		summarizeBy: sum
+		sourceColumn: payment_terms_days
+
+		annotation SummarizationSetBy = Automatic
+
+	column credit_limit
+		dataType: double
+		lineageTag: 60e76a59-84e4-422a-bcbf-417b69ea07ba
+		summarizeBy: sum
+		sourceColumn: credit_limit
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column customer_since
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 6e5c092d-cb93-4d9d-8267-f7e4b1dae876
+		summarizeBy: none
+		sourceColumn: customer_since
+
+		variation Variation
+			isDefault
+			relationship: c2d2844e-1613-4a8b-b954-812a5e139a0f
+			defaultHierarchy: LocalDateTable_b2171869-6c4d-403b-b6da-4efb38d74900.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition 'public dim_customer' = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("127.0.0.1:5433", "erp_reporting"),
+				    public_dim_customer = Source{[Schema="public",Item="dim_customer"]}[Data]
+				in
+				    public_dim_customer
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,242 @@
+table 'public fact_invoice'
+	lineageTag: 14b636e8-b5f6-4dfb-94f4-dc0e51a1a777
+
+	measure Revenue = SUM ( 'public fact_invoice'[net_amount] )
+		formatString: €#,0
+		lineageTag: 1499bd0f-cde0-41b7-8115-64084f568421
+
+	measure 'Revenue Gross' = SUM ( 'public fact_invoice'[gross_amount] )
+		formatString: €#,0
+		lineageTag: c1e3c395-b4a2-494c-9123-f4d91fc66bd0
+
+	measure 'Revenue PY' = CALCULATE ( [Revenue], SAMEPERIODLASTYEAR ( 'public dim_date'[full_date] ) )
+		formatString: €#,0
+		lineageTag: d1f6aa27-cfa3-4727-97fd-ad2b5f82051f
+
+	measure 'Revenue YoY %' = VAR _cur = [Revenue] VAR _py = [Revenue PY] RETURN IF ( NOT ISBLANK ( _cur ) && NOT ISBLANK ( _py ), DIVIDE ( _cur - _py, _py ) )
+		formatString: +0.0%;-0.0%;0.0%
+		lineageTag: 5ad30741-c239-414b-a07b-319000e4df78
+
+	measure 'Open Receivables' = CALCULATE ( SUM ( 'public fact_invoice'[gross_amount] ), 'public fact_invoice'[payment_status] = "OPEN", REMOVEFILTERS ( 'public dim_date' ) )
+		formatString: €#,0
+		lineageTag: dc2d5f87-297e-4486-9d3a-125e63d97f23
+
+	measure DSO = VAR _lastDate = MAX ( 'public fact_invoice'[invoice_date] ) VAR _grossTTM = CALCULATE ( SUM ( 'public fact_invoice'[gross_amount] ), DATESINPERIOD ( 'public dim_date'[full_date], _lastDate, -365, DAY ) ) RETURN DIVIDE ( [Open Receivables], _grossTTM ) * 365
+		formatString: 0.0 "days"
+		lineageTag: 416ee39e-26ef-49cd-9ffe-1c72960bc3ee
+
+	measure 'Overdue Amount' = VAR _asOf = CALCULATE ( MAX ( 'public fact_invoice'[invoice_date] ), REMOVEFILTERS () ) RETURN CALCULATE ( SUM ( 'public fact_invoice'[gross_amount] ), 'public fact_invoice'[payment_status] = "OPEN", 'public fact_invoice'[due_date] < _asOf, REMOVEFILTERS ( 'public dim_date' ) )
+		formatString: €#,0
+		lineageTag: 202387cf-7244-429b-96cc-f17ffe8c1964
+
+	measure 'Overdue %' = DIVIDE ( [Overdue Amount], [Open Receivables] )
+		formatString: 0.0%
+		lineageTag: 8645a56f-11b7-444f-8edd-c7b5aee2cc3a
+
+	measure 'Collection Rate' = DIVIDE ( CALCULATE ( SUM ( 'public fact_invoice'[gross_amount] ), 'public fact_invoice'[payment_status] = "PAID" ), [Revenue Gross] )
+		formatString: 0.0%
+		lineageTag: f8d49c41-23fa-49c4-8905-f0413b64c1a9
+
+	measure 'Cash Collected' = CALCULATE ( SUM ( 'public fact_invoice'[gross_amount] ), USERELATIONSHIP ( 'public fact_invoice'[payment_date_key], 'public dim_date'[date_key] ) )
+		formatString: €#,0
+		lineageTag: 876ae71f-d70d-4610-9415-d573fd595d89
+
+	measure 'Revenue YTD YoY %' = VAR _end = MAX ( 'public fact_invoice'[invoice_date] ) VAR _start = DATE ( YEAR ( _end ), 1, 1 ) VAR _cur = CALCULATE ( [Revenue], DATESBETWEEN ( 'public dim_date'[full_date], _start, _end ) ) VAR _py = CALCULATE ( [Revenue], DATESBETWEEN ( 'public dim_date'[full_date], EDATE ( _start, -12 ), EDATE ( _end, -12 ) ) ) RETURN DIVIDE ( _cur - _py, _py )
+		formatString: +0.0%;-0.0%;0.0%
+		lineageTag: 956ed505-986a-4bee-b3d1-ecaf154e847c
+
+	measure 'Invoice Count' = COUNTROWS ( 'public fact_invoice' )
+		formatString: #,0
+		lineageTag: f4e8a020-db16-4a04-97ea-1e627bbd7170
+
+	measure 'Active Customers' = DISTINCTCOUNT ( 'public fact_invoice'[customer_key] )
+		formatString: #,0
+		lineageTag: df5f232b-5115-4c64-8362-964ed6b57bbc
+
+	measure 'Avg Invoice Value' = DIVIDE ( [Revenue], [Invoice Count] )
+		formatString: €#,0
+		lineageTag: 927b6a30-2843-4e15-aaa0-3900f6386f5d
+
+	column invoice_key
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 6196a888-2cf5-41e4-bb43-da8bb1a5c292
+		summarizeBy: sum
+		sourceColumn: invoice_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column invoice_number
+		dataType: string
+		lineageTag: 65c6c261-e69a-43eb-bc5c-a83733e30c9f
+		summarizeBy: none
+		sourceColumn: invoice_number
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_key
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 0e2f6700-b625-4246-adb9-4f5808a33d36
+		summarizeBy: none
+		sourceColumn: customer_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column costcentre_key
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 3fd7ca61-f2ee-4281-8ac8-5c4ec4675709
+		summarizeBy: none
+		sourceColumn: costcentre_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column invoice_date_key
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 5ffeba08-a8d9-49e8-bd90-d2681d94efac
+		summarizeBy: none
+		sourceColumn: invoice_date_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column due_date_key
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: a6d4c806-a460-430e-bc33-31d1d198339d
+		summarizeBy: sum
+		sourceColumn: due_date_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column payment_date_key
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 3557ce9f-2281-4400-bea5-88187b7a0eb7
+		summarizeBy: sum
+		sourceColumn: payment_date_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column invoice_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 7aa03ec1-2001-4979-845d-69cbb5b241a4
+		summarizeBy: none
+		sourceColumn: invoice_date
+
+		variation Variation
+			isDefault
+			relationship: 86cdf4ee-e56f-457f-a0a6-378cfd7f6f59
+			defaultHierarchy: LocalDateTable_e53ba277-c7a9-4a50-a296-115799a06aa0.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column due_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 954ad794-3a81-4b1a-9f43-607ff2938110
+		summarizeBy: none
+		sourceColumn: due_date
+
+		variation Variation
+			isDefault
+			relationship: 32811bc0-eb8a-429a-8bbc-93a1e6c54613
+			defaultHierarchy: LocalDateTable_9ecbb9c7-4de1-4a19-bb9a-2c703546a9cb.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column payment_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: bbf9e6ed-0587-401e-8052-66469c7ab601
+		summarizeBy: none
+		sourceColumn: payment_date
+
+		variation Variation
+			isDefault
+			relationship: 916785e9-370b-48af-84bd-61950086dfa2
+			defaultHierarchy: LocalDateTable_6cc47b5e-549d-4dd6-bfb4-0ce8996330ca.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column payment_status
+		dataType: string
+		lineageTag: ec4ec9c8-0929-4335-8434-101be0b48858
+		summarizeBy: none
+		sourceColumn: payment_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column net_amount
+		dataType: double
+		lineageTag: ba604fae-9f20-49e4-9986-44ec747fe21a
+		summarizeBy: sum
+		sourceColumn: net_amount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column vat_rate
+		dataType: double
+		lineageTag: c844e1fe-7556-4715-8885-fa8d35a4660a
+		summarizeBy: sum
+		sourceColumn: vat_rate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column vat_amount
+		dataType: double
+		lineageTag: 7acd6c78-af2b-42af-8650-6efad345d347
+		summarizeBy: sum
+		sourceColumn: vat_amount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column gross_amount
+		dataType: double
+		lineageTag: 9c464e4a-4d97-45e6-98ec-2b42d182c299
+		summarizeBy: sum
+		sourceColumn: gross_amount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column currency
+		dataType: string
+		lineageTag: fab604fd-1e31-4f26-a844-fb203381998a
+		summarizeBy: none
+		sourceColumn: currency
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'public fact_invoice' = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("127.0.0.1:5433", "erp_reporting"),
+				    public_fact_invoice = Source{[Schema="public",Item="fact_invoice"]}[Data]
+				in
+				    public_fact_invoice
+
+	annotation PBI_ResultType = Table
+

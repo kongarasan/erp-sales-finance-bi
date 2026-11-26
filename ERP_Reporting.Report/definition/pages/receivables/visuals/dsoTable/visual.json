@@ -1,0 +1,168 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "dsoTable",
+  "position": {
+    "x": 32,
+    "y": 690,
+    "z": 12000,
+    "height": 358,
+    "width": 1856,
+    "tabOrder": 12000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "public vw_dso_by_customer"
+                    }
+                  },
+                  "Property": "customer_name"
+                }
+              },
+              "queryRef": "public vw_dso_by_customer.customer_name",
+              "nativeQueryRef": "customer_name",
+              "displayName": "Customer"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "public vw_dso_by_customer"
+                    }
+                  },
+                  "Property": "segment"
+                }
+              },
+              "queryRef": "public vw_dso_by_customer.segment",
+              "nativeQueryRef": "segment",
+              "displayName": "Segment"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "public vw_dso_by_customer"
+                    }
+                  },
+                  "Property": "payment_terms_days"
+                }
+              },
+              "queryRef": "public vw_dso_by_customer.payment_terms_days",
+              "nativeQueryRef": "payment_terms_days",
+              "displayName": "Terms (days)"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "public vw_dso_by_customer"
+                    }
+                  },
+                  "Property": "open_receivables"
+                }
+              },
+              "queryRef": "public vw_dso_by_customer.open_receivables",
+              "nativeQueryRef": "open_receivables",
+              "displayName": "Open AR"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "public vw_dso_by_customer"
+                    }
+                  },
+                  "Property": "dso_days"
+                }
+              },
+              "queryRef": "public vw_dso_by_customer.dso_days",
+              "nativeQueryRef": "dso_days",
+              "displayName": "DSO (days)"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "public vw_dso_by_customer"
+                    }
+                  },
+                  "Property": "avg_days_to_pay"
+                }
+              },
+              "queryRef": "public vw_dso_by_customer.avg_days_to_pay",
+              "nativeQueryRef": "avg_days_to_pay",
+              "displayName": "Avg days to pay"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "public vw_dso_by_customer"
+                    }
+                  },
+                  "Property": "avg_days_beyond_terms"
+                }
+              },
+              "queryRef": "public vw_dso_by_customer.avg_days_beyond_terms",
+              "nativeQueryRef": "avg_days_beyond_terms",
+              "displayName": "Days beyond terms"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "public vw_dso_by_customer"
+                  }
+                },
+                "Property": "open_receivables"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Customers by open receivables'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

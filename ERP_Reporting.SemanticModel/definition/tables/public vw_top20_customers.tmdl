@@ -1,0 +1,97 @@
+table 'public vw_top20_customers'
+	lineageTag: 0284af56-e0ca-4e4c-b2c0-1ee6784d9041
+
+	column revenue_rank
+		dataType: int64
+		formatString: 0
+		lineageTag: edb35dd8-40f8-4dcf-832c-82d24194a281
+		summarizeBy: none
+		sourceColumn: revenue_rank
+
+		annotation SummarizationSetBy = User
+
+	column customer_number
+		dataType: string
+		lineageTag: 627fff34-c675-46ed-92ca-36d9812c3bf9
+		summarizeBy: none
+		sourceColumn: customer_number
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_name
+		dataType: string
+		lineageTag: f550f181-482b-444b-be6c-a90e469048c3
+		summarizeBy: none
+		sourceColumn: customer_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column segment
+		dataType: string
+		lineageTag: 89ec46e7-45c6-4d4a-b261-a19710abac0d
+		summarizeBy: none
+		sourceColumn: segment
+
+		annotation SummarizationSetBy = Automatic
+
+	column industry
+		dataType: string
+		lineageTag: f10b8724-1cf4-423a-9e46-43b164b0ea46
+		summarizeBy: none
+		sourceColumn: industry
+
+		annotation SummarizationSetBy = Automatic
+
+	column net_revenue
+		dataType: double
+		formatString: €#,0
+		lineageTag: 8b73f834-6c69-4e35-baf0-5c460f53ed38
+		summarizeBy: sum
+		sourceColumn: net_revenue
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column invoice_count
+		dataType: int64
+		formatString: 0
+		lineageTag: 3c3064de-ae49-4a25-a67e-bc2592e1cae6
+		summarizeBy: sum
+		sourceColumn: invoice_count
+
+		annotation SummarizationSetBy = Automatic
+
+	column revenue_share_pct
+		dataType: double
+		formatString: 0.00"%"
+		lineageTag: c05c3a02-0ce1-4df7-b3dc-540ca2aa7b81
+		summarizeBy: none
+		sourceColumn: revenue_share_pct
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column cumulative_share_pct
+		dataType: double
+		formatString: 0.0"%"
+		lineageTag: fe9ed1f1-3577-4de5-8758-f8d977c53318
+		summarizeBy: none
+		sourceColumn: cumulative_share_pct
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition 'public vw_top20_customers' = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("127.0.0.1:5433", "erp_reporting"),
+				    public_vw_top20_customers = Source{[Schema="public",Item="vw_top20_customers"]}[Data]
+				in
+				    public_vw_top20_customers
+
+	annotation PBI_ResultType = Table
+

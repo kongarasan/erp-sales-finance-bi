@@ -1,0 +1,102 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.15.0/schema.json",
+  "name": "ageing",
+  "position": {
+    "x": 32,
+    "y": 276,
+    "z": 10000,
+    "height": 390,
+    "width": 916,
+    "tabOrder": 10000
+  },
+  "visual": {
+    "visualType": "clusteredColumnChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "public vw_overdue_ageing"
+                    }
+                  },
+                  "Property": "ageing_bucket"
+                }
+              },
+              "queryRef": "public vw_overdue_ageing.ageing_bucket",
+              "nativeQueryRef": "ageing_bucket",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "public vw_overdue_ageing"
+                        }
+                      },
+                      "Property": "overdue_amount"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(public vw_overdue_ageing.overdue_amount)",
+              "nativeQueryRef": "overdue_amount",
+              "displayName": "Overdue amount"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "public vw_overdue_ageing"
+                  }
+                },
+                "Property": "ageing_bucket"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Overdue receivables by ageing bucket (days past due)'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

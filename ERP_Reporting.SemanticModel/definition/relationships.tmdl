@@ -1,0 +1,57 @@
+relationship d7881705-bcea-438d-a2cd-25670d576214
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'public vw_revenue_by_month'.month_start
+	toColumn: LocalDateTable_876ee7db-ab8b-4e92-bb88-d399f4046e91.Date
+
+relationship c2d2844e-1613-4a8b-b954-812a5e139a0f
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'public dim_customer'.customer_since
+	toColumn: LocalDateTable_b2171869-6c4d-403b-b6da-4efb38d74900.Date
+
+relationship 86cdf4ee-e56f-457f-a0a6-378cfd7f6f59
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'public fact_invoice'.invoice_date
+	toColumn: LocalDateTable_e53ba277-c7a9-4a50-a296-115799a06aa0.Date
+
+relationship 32811bc0-eb8a-429a-8bbc-93a1e6c54613
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'public fact_invoice'.due_date
+	toColumn: LocalDateTable_9ecbb9c7-4de1-4a19-bb9a-2c703546a9cb.Date
+
+relationship 916785e9-370b-48af-84bd-61950086dfa2
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'public fact_invoice'.payment_date
+	toColumn: LocalDateTable_6cc47b5e-549d-4dd6-bfb4-0ce8996330ca.Date
+
+relationship 5a3e2265-dcf5-42b2-8615-3b8ba7d016b5
+	fromColumn: 'public fact_invoice'.costcentre_key
+	toColumn: 'public dim_costcentre'.costcentre_key
+
+	annotation PBI_IsFromSource = FS
+
+relationship 0e01e9c4-088c-4826-91d8-abaa9f668ded
+	fromColumn: 'public fact_invoice'.customer_key
+	toColumn: 'public dim_customer'.customer_key
+
+	annotation PBI_IsFromSource = FS
+
+relationship 4bdafcf3-b418-4651-8dff-6979eec7ce6c
+	isActive: false
+	fromColumn: 'public fact_invoice'.due_date_key
+	toColumn: 'public dim_date'.date_key
+
+	annotation PBI_IsFromSource = FS
+
+relationship 6ee05b14-7857-462d-93c2-30bc6947a42f
+	fromColumn: 'public fact_invoice'.invoice_date_key
+	toColumn: 'public dim_date'.date_key
+
+	annotation PBI_IsFromSource = FS
+
+relationship 4b423610-f3d5-4737-8442-365b72d51308
+	isActive: false
+	fromColumn: 'public fact_invoice'.payment_date_key
+	toColumn: 'public dim_date'.date_key
+
+	annotation PBI_IsFromSource = FS
+

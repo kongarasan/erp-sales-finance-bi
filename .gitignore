@@ -1,0 +1,8 @@
+.env
+.venv/
+__pycache__/
+data/raw/
+*.pbix.bak
+# Power BI project: local cache/settings only
+**/.pbi/localSettings.json
+**/.pbi/cache.abf

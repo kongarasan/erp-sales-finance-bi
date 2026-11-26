@@ -1,0 +1,168 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "top20",
+  "position": {
+    "x": 32,
+    "y": 124,
+    "z": 5000,
+    "height": 924,
+    "width": 1120,
+    "tabOrder": 5000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "public vw_top20_customers"
+                    }
+                  },
+                  "Property": "revenue_rank"
+                }
+              },
+              "queryRef": "public vw_top20_customers.revenue_rank",
+              "nativeQueryRef": "revenue_rank",
+              "displayName": "#"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "public vw_top20_customers"
+                    }
+                  },
+                  "Property": "customer_name"
+                }
+              },
+              "queryRef": "public vw_top20_customers.customer_name",
+              "nativeQueryRef": "customer_name",
+              "displayName": "Customer"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "public vw_top20_customers"
+                    }
+                  },
+                  "Property": "segment"
+                }
+              },
+              "queryRef": "public vw_top20_customers.segment",
+              "nativeQueryRef": "segment",
+              "displayName": "Segment"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "public vw_top20_customers"
+                    }
+                  },
+                  "Property": "industry"
+                }
+              },
+              "queryRef": "public vw_top20_customers.industry",
+              "nativeQueryRef": "industry",
+              "displayName": "Industry"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "public vw_top20_customers"
+                    }
+                  },
+                  "Property": "net_revenue"
+                }
+              },
+              "queryRef": "public vw_top20_customers.net_revenue",
+              "nativeQueryRef": "net_revenue",
+              "displayName": "Net revenue"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "public vw_top20_customers"
+                    }
+                  },
+                  "Property": "revenue_share_pct"
+                }
+              },
+              "queryRef": "public vw_top20_customers.revenue_share_pct",
+              "nativeQueryRef": "revenue_share_pct",
+              "displayName": "Share"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "public vw_top20_customers"
+                    }
+                  },
+                  "Property": "cumulative_share_pct"
+                }
+              },
+              "queryRef": "public vw_top20_customers.cumulative_share_pct",
+              "nativeQueryRef": "cumulative_share_pct",
+              "displayName": "Cumulative"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "public vw_top20_customers"
+                  }
+                },
+                "Property": "revenue_rank"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Top-20 customers (all time)'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

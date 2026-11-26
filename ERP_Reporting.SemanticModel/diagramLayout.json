@@ -1,0 +1,126 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 143.22263958876823,
+            "y": 650.38087963950136
+          },
+          "nodeIndex": "public dim_costcentre",
+          "nodeLineageTag": "9bd2890c-a85c-4049-bc95-22c4181c1870",
+          "size": {
+            "height": 224,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 50,
+            "y": -50
+          },
+          "nodeIndex": "public dim_customer",
+          "nodeLineageTag": "7e282749-33e5-43cb-9fe0-222d7037d456",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 563.30572391140322,
+            "y": 341.43409397874325
+          },
+          "nodeIndex": "public dim_date",
+          "nodeLineageTag": "d8286290-2bd1-474f-b58f-58fb67903c0c",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 277.80943870283079,
+            "y": 300.18049859184464
+          },
+          "nodeIndex": "public fact_invoice",
+          "nodeLineageTag": "14b636e8-b5f6-4dfb-94f4-dc0e51a1a777",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 797.30572391140322,
+            "y": 312.19043981975068
+          },
+          "nodeIndex": "public vw_dso_by_customer",
+          "nodeLineageTag": "d471a69c-c5d8-4b6a-b597-2eebc1aa9e8f",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1081.3057239114032,
+            "y": 350.19043981975068
+          },
+          "nodeIndex": "public vw_overdue_ageing",
+          "nodeLineageTag": "81b769e3-a367-4520-8021-a37f62c32a88",
+          "size": {
+            "height": 224,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1365.3057239114032,
+            "y": 312.19043981975068
+          },
+          "nodeIndex": "public vw_revenue_by_month",
+          "nodeLineageTag": "ef72b5a1-eae0-41ed-aeb1-b4131a93e98e",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1649.3057239114032,
+            "y": 314.19043981975068
+          },
+          "nodeIndex": "public vw_top20_customers",
+          "nodeLineageTag": "0284af56-e0ca-4e4c-b2c0-1ee6784d9041",
+          "size": {
+            "height": 296,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "All tables",
+      "zoomValue": 100,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "All tables",
+  "defaultDiagram": "All tables"
+}

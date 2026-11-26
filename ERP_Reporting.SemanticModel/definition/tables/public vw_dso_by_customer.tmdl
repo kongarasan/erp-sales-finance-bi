@@ -1,0 +1,129 @@
+table 'public vw_dso_by_customer'
+	lineageTag: d471a69c-c5d8-4b6a-b597-2eebc1aa9e8f
+
+	column customer_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 5a2bf5a1-1b2a-4857-bb4f-2c91c1d4c585
+		summarizeBy: sum
+		sourceColumn: customer_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_number
+		dataType: string
+		lineageTag: aa9f63af-1329-48a8-a441-f68fe158b015
+		summarizeBy: none
+		sourceColumn: customer_number
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_name
+		dataType: string
+		lineageTag: 2c8b6020-9deb-4f7e-85e1-2f8c5b9b27e5
+		summarizeBy: none
+		sourceColumn: customer_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column segment
+		dataType: string
+		lineageTag: 91e8fc2f-8baf-4033-9798-0817bcf82ec4
+		summarizeBy: none
+		sourceColumn: segment
+
+		annotation SummarizationSetBy = Automatic
+
+	column payment_terms_days
+		dataType: int64
+		formatString: 0
+		lineageTag: 21cf39d0-224c-4099-814f-7d52ebd7b7dc
+		summarizeBy: sum
+		sourceColumn: payment_terms_days
+
+		annotation SummarizationSetBy = Automatic
+
+	column gross_revenue_365d
+		dataType: double
+		formatString: €#,0
+		lineageTag: 00006f1e-3e05-43da-a417-f3f0fb9d23eb
+		summarizeBy: sum
+		sourceColumn: gross_revenue_365d
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column open_receivables
+		dataType: double
+		formatString: €#,0
+		lineageTag: 13f68305-2e61-47af-adf4-c2c6934652c8
+		summarizeBy: sum
+		sourceColumn: open_receivables
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column open_invoices
+		dataType: int64
+		formatString: 0
+		lineageTag: 60a21b94-6514-42ab-9530-5d38bae44905
+		summarizeBy: sum
+		sourceColumn: open_invoices
+
+		annotation SummarizationSetBy = Automatic
+
+	column dso_days
+		dataType: double
+		formatString: 0.0
+		lineageTag: c3912412-bf1a-4aa5-bcab-e39dfdd3756d
+		summarizeBy: none
+		sourceColumn: dso_days
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column avg_days_to_pay
+		dataType: double
+		formatString: 0.0
+		lineageTag: 32a7f1df-4fd7-4259-b833-3a9c7efb2b89
+		summarizeBy: none
+		sourceColumn: avg_days_to_pay
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column avg_days_beyond_terms
+		dataType: double
+		formatString: +0.0;-0.0;0.0
+		lineageTag: b356213d-406d-44e1-bbec-1bf202ee62f4
+		summarizeBy: none
+		sourceColumn: avg_days_beyond_terms
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column invalid_payment_rows
+		dataType: int64
+		formatString: 0
+		lineageTag: 33db8f13-eae3-4854-95f6-d2a02a0c41c7
+		summarizeBy: sum
+		sourceColumn: invalid_payment_rows
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'public vw_dso_by_customer' = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("127.0.0.1:5433", "erp_reporting"),
+				    public_vw_dso_by_customer = Source{[Schema="public",Item="vw_dso_by_customer"]}[Data]
+				in
+				    public_vw_dso_by_customer
+
+	annotation PBI_ResultType = Table
+
